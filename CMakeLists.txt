@@ -6,12 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(include)
 
-set(MAIN_SRC
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
+set(QUICKSORT_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/quicksort.c
   )
 
-add_executable(main)
-target_sources(main
+add_executable(quicksort)
+target_sources(quicksort
  PRIVATE
-  ${MAIN_SRC}
+  ${QUICKSORT_SRC}
 )

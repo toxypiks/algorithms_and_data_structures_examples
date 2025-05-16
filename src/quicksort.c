@@ -12,12 +12,12 @@ void print_data(int* my_array, size_t left, size_t right) {
 
 void swap(int *x, int *y)
 {
-    int tmp = *x; // value from x into tmp
+    int tmp = *x;
     *x = *y;
     *y = tmp;
 }
 
-void quicksort_recursiv(int *data, int left, int right, int level)
+void quicksort(int *data, int left, int right, int level)
 {
     int pivot_idx = left + (right - left)/2;
     int pivot = data[pivot_idx];
@@ -40,20 +40,16 @@ void quicksort_recursiv(int *data, int left, int right, int level)
         }
     }
     while (i < j);
-    if (left < j) quicksort_recursiv(data, left, j - 1, level++);
-    if (i < right) quicksort_recursiv(data, j + 1, right, level++);
+    if (left < j) quicksort(data, left, j - 1, level++);
+    if (i < right) quicksort(data, j + 1, right, level++);
 }
 
 int main (void)
 {
-    int x = 4;
-    int y = 10;
-    swap(&x, &y);
-    printf("x: %d y: %d\n", x, y);
-
     int my_array[7] = {3, 7, 4, 8, 23, 45, 2};
 
-    quicksort_recursiv(my_array, 0, ARR_LEN(my_array)-1, 0);
+    quicksort(my_array, 0, ARR_LEN(my_array)-1, 0);
     print_data(my_array, 0, ARR_LEN(my_array) - 1);
+
     return 0;
 }
