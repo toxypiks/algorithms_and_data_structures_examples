@@ -48,10 +48,26 @@ int list_len(List *list)
     return length;
 }
 
+void list_push(List *list, int data)
+{
+    Node *new_node = create_node(data);
+    Node *tmp = list->nodes->next;
+
+    list->nodes->next = new_node;
+    new_node->next = tmp;
+}
+
 int main (void)
 {
     List *my_list = create_list();
     printf("Is my List empty? %d\n", is_empty(my_list));
     printf("Length of my list is: %d\n", list_len(my_list));
+
+    list_push(my_list, 4);
+    list_push(my_list, 10);
+    list_push(my_list, 30);
+    printf("Length of my list is: %d\n", list_len(my_list));
+    printf("Is my List empty? %d\n", is_empty(my_list));
+
     return 0;
 }
