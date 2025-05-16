@@ -15,3 +15,13 @@ target_sources(quicksort
  PRIVATE
   ${QUICKSORT_SRC}
 )
+
+set(SINGLY_LINKED_LIST_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/singly_linked_list.c
+  )
+
+add_executable(singly_linked_list)
+target_sources(singly_linked_list
+ PRIVATE
+  ${SINGLY_LINKED_LIST_SRC}
+)
