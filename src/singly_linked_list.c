@@ -35,9 +35,23 @@ bool is_empty(List *list)
     return false;
 }
 
+int list_len(List *list)
+{
+    int length = 0;
+    Node *current = list->nodes->next;
+
+    while (current != NULL) {
+        ++length;
+        current = current->next;
+    }
+
+    return length;
+}
+
 int main (void)
 {
     List *my_list = create_list();
-    printf("Is my List empty? %i\n", is_empty(my_list));
+    printf("Is my List empty? %d\n", is_empty(my_list));
+    printf("Length of my list is: %d\n", list_len(my_list));
     return 0;
 }
