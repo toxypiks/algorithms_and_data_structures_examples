@@ -150,6 +150,38 @@ void list_delete_last(List *list)
     current->next = NULL;
 }
 
+void list_delete_at_position(List *list, int position)
+{
+    Node *current = list->first;
+    Node *tmp_current = list->first;
+
+    if (current == NULL) {
+        printf("List already empty\n");
+        return;
+    }
+    if (position == 0) {
+        printf("Position must be greater than 0\n");
+        return;
+    }
+    if (position > list->length && current != NULL) {
+        printf("Position out of range\n");
+        return;
+    }
+    if (position == 1) {
+        list_delete_first(list);
+    }
+    else {
+        for (int i = 0; i < position - 2; ++i) {
+            current = current->next;
+        }
+        tmp_current = current->next->next;
+        free(current->next);
+        current->next = NULL;
+        current->next = tmp_current;
+    }
+
+}
+
 void print_list(List *list)
 {
     Node *current = list->first;
@@ -177,7 +209,7 @@ int main (void)
     list_push_to_position(my_list, 6, 1);
     list_push_to_position(my_list, 7, 2);
 
-    list_delete_last(my_list);
+    list_delete_at_position(my_list, 3);
 
     //list_push_to_position(my_list, 8, 2);
     //list_push_to_position(my_list, 9, 4);
