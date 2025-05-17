@@ -123,6 +123,18 @@ void list_push_to_position(List *list, int data, int position)
     }
 }
 
+void list_delete_first(List *list)
+{
+    Node *first = list->first;
+    if (list->first == NULL) {
+        printf("List already empty\n");
+        return;
+    }
+    Node *second = list->first->next;
+    list->first = second;
+    free(first);
+}
+
 void print_list(List *list)
 {
     Node *current = list->first;
@@ -146,13 +158,15 @@ int main (void)
     //list_push_last(my_list, 20);
     //list_push_last(my_list, 100);
 
-    list_push_to_position(my_list, 4, 1);
-    list_push_to_position(my_list, 6, 1);
-    list_push_to_position(my_list, 7, 2);
+    //list_push_to_position(my_list, 4, 1);
+    //list_push_to_position(my_list, 6, 1);
+    //list_push_to_position(my_list, 7, 2);
+
+    list_delete_first(my_list);
 
     //list_push_to_position(my_list, 8, 2);
-    list_push_to_position(my_list, 9, 4);
-    list_push_to_position(my_list, 4, 0);
+    //list_push_to_position(my_list, 9, 4);
+    //list_push_to_position(my_list, 4, 0);
 
     //list_push_to_position(my_list, 9, 2); //TODO empty list
 
