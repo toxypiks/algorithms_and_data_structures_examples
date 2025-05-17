@@ -91,6 +91,38 @@ void list_push_last(List *list, int data)
     list->length++;
 }
 
+void list_push_to_position(List *list, int data, int position)
+{
+    Node *new_node = create_node(data);
+    Node *current = list->first;
+    Node *tmp_current = list->first;
+
+    if (current != NULL && position > list->length) {
+        printf("ERROR: Position out of range\n");
+        free(new_node);
+        return;
+    }
+    if (current == NULL && position > 0 || position == 1) {
+        list_push_first(list, data);
+        return;
+    }
+    if (position == 0) {
+        printf("ERROR: Position must be greater than 0\n");
+        free(new_node);
+        return;
+    }
+    else {
+        for (int i = 0; i < position - 2; ++i) {
+            current = current->next;
+        }
+        tmp_current = current;
+        current = current->next;
+        tmp_current->next = new_node;
+        new_node->next = current;
+        list->length++;
+    }
+}
+
 void print_list(List *list)
 {
     Node *current = list->first;
@@ -111,8 +143,18 @@ int main (void)
     //list_push_first(my_list, 4);
     //list_push_first(my_list, 10);
     //list_push_first(my_list, 30);
-    list_push_last(my_list, 20);
+    //list_push_last(my_list, 20);
     //list_push_last(my_list, 100);
+
+    list_push_to_position(my_list, 4, 1);
+    list_push_to_position(my_list, 6, 1);
+    list_push_to_position(my_list, 7, 2);
+
+    //list_push_to_position(my_list, 8, 2);
+    list_push_to_position(my_list, 9, 4);
+    list_push_to_position(my_list, 4, 0);
+
+    //list_push_to_position(my_list, 9, 2); //TODO empty list
 
     printf("Length of my list is: %d\n", list_len(my_list));
     printf("Is my List empty? %d\n", is_empty(my_list));
