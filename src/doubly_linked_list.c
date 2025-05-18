@@ -57,15 +57,22 @@ void list_push_first(List *list, int data)
     list->length++;
 }
 
-//void list_push_last(List *list, int data)
-//{
-//    Node *new_node = create_node(data);
-//    Node *first_node = list->node;
-//
-//    if(first_node == NULL) {
-//
-//    }
-//}
+void list_push_last(List *list, int data)
+{
+    Node *new_node = create_node(data);
+    Node *first_node = list->first;
+    Node *last_node = list->last;
+
+    if(first_node == NULL) {
+        list->first = new_node;
+        list->last = new_node;
+        list->length++;
+        return;
+    }
+    list->last->next = new_node;
+    new_node->prev = last_node;
+    list->length++;
+}
 
 void print_list(List *list)
 {
@@ -89,6 +96,9 @@ int main(void)
     print_list(my_list);
 
     list_push_first(my_list, 2);
+    print_list(my_list);
+
+    list_push_last(my_list, 1);
     print_list(my_list);
 
     printf("Is my list empty? %d\n", is_empty(my_list));
