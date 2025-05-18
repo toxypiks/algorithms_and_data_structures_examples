@@ -38,9 +38,43 @@ bool is_empty(List *list)
     return false;
 }
 
+void list_push_first(List *list, int data)
+{
+    Node *new_node = create_node(data);
+    Node *first_node = list->node;
+
+    if (first_node == NULL) {
+        list->node = new_node;
+        list->length++;
+        return;
+    }
+    list->node = new_node;
+    list->node->next = first_node;
+    first_node->prev = list->node;
+    list->length++;
+}
+
+void print_list(List *list)
+{
+    Node *current = list->node;
+    while (current != NULL) {
+        printf("%d,", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
 int main(void)
 {
     List *my_list = create_list();
+    printf("Is my list empty? %d\n", is_empty(my_list));
+
+    list_push_first(my_list, 5);
+    print_list(my_list);
+
+    list_push_first(my_list, 8);
+    print_list(my_list);
+
     printf("Is my list empty? %d\n", is_empty(my_list));
 
     return 0;
