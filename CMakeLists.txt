@@ -16,6 +16,16 @@ target_sources(quicksort
   ${QUICKSORT_SRC}
 )
 
+set(INSERTION_SORT_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/insertion_sort.c
+  )
+
+add_executable(insertion_sort)
+target_sources(insertion_sort
+ PRIVATE
+  ${INSERTION_SORT_SRC}
+)
+
 set(SINGLY_LINKED_LIST_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/singly_linked_list.c
   )
