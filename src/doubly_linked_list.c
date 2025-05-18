@@ -9,7 +9,8 @@ typedef struct Node {
 } Node;
 
 typedef struct List {
-    Node *node;
+    Node *first;
+    Node *last;
     size_t length;
 } List;
 
@@ -25,7 +26,8 @@ Node* create_node(int data)
 List* create_list()
 {
     List *new_list = malloc(sizeof(List));
-    new_list->node = NULL;
+    new_list->first = NULL;
+    new_list->last = NULL;
     new_list->length = 0;
     return new_list;
 }
@@ -41,22 +43,33 @@ bool is_empty(List *list)
 void list_push_first(List *list, int data)
 {
     Node *new_node = create_node(data);
-    Node *first_node = list->node;
+    Node *first_node = list->first;
 
     if (first_node == NULL) {
-        list->node = new_node;
+        list->first = new_node;
+        list->last = new_node;
         list->length++;
         return;
     }
-    list->node = new_node;
-    list->node->next = first_node;
-    first_node->prev = list->node;
+    list->first = new_node;
+    list->first->next = first_node;
+    first_node->prev = list->first;
     list->length++;
 }
 
+//void list_push_last(List *list, int data)
+//{
+//    Node *new_node = create_node(data);
+//    Node *first_node = list->node;
+//
+//    if(first_node == NULL) {
+//
+//    }
+//}
+
 void print_list(List *list)
 {
-    Node *current = list->node;
+    Node *current = list->first;
     while (current != NULL) {
         printf("%d,", current->data);
         current = current->next;
@@ -73,6 +86,9 @@ int main(void)
     print_list(my_list);
 
     list_push_first(my_list, 8);
+    print_list(my_list);
+
+    list_push_first(my_list, 2);
     print_list(my_list);
 
     printf("Is my list empty? %d\n", is_empty(my_list));
