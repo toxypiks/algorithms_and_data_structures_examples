@@ -35,3 +35,13 @@ target_sources(singly_linked_list
  PRIVATE
   ${SINGLY_LINKED_LIST_SRC}
 )
+
+set(DOUBLY_LINKED_LIST_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/doubly_linked_list.c
+  )
+
+add_executable(doubly_linked_list)
+target_sources(doubly_linked_list
+ PRIVATE
+  ${DOUBLY_LINKED_LIST_SRC}
+)
