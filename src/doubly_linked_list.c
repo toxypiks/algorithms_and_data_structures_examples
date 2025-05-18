@@ -69,8 +69,9 @@ void list_push_last(List *list, int data)
         list->length++;
         return;
     }
-    list->last->next = new_node;
-    new_node->prev = last_node;
+    list->last = new_node;
+    last_node->next = new_node;
+    list->last->prev = last_node;
     list->length++;
 }
 
@@ -105,6 +106,35 @@ void list_push_to_position(List *list, int data, int position)
     list->length++;
 }
 
+void list_delete_first(List *list)
+{
+    Node *first = list->first;
+    if (list->length == 0) {
+        printf("ERROR: List already empty\n");
+        return;
+    }
+    Node *second = list->first->next;
+    list->first = second;
+    list->first->prev = NULL;
+    free(first);
+    first = NULL;
+    list->length--;
+}
+
+void list_delete_last(List *list)
+{
+    Node *last = list->last;
+    if (list->length == 0) {
+        printf("ERROR: List already empty\n");
+        return;
+    }
+    Node *penultimate = last->prev;
+    penultimate->next = NULL;
+    free(last);
+    last = NULL;
+    list->length--;
+}
+
 void print_list(List *list)
 {
     Node *current = list->first;
@@ -132,7 +162,15 @@ int main(void)
     list_push_last(my_list, 1);
     print_list(my_list);
 
+    printf("my_list last: %d\n", my_list->last->data);
+
     list_push_to_position(my_list, 10, 3);
+    print_list(my_list);
+
+    list_delete_first(my_list);
+    print_list(my_list);
+
+    list_delete_last(my_list);
     print_list(my_list);
 
     printf("Is my list empty? %d\n", is_empty(my_list));

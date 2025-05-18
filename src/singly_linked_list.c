@@ -133,6 +133,8 @@ void list_delete_first(List *list)
     Node *second = list->first->next;
     list->first = second;
     free(first);
+    first = NULL;
+    list->length--;
 }
 
 void list_delete_last(List *list)
@@ -148,6 +150,7 @@ void list_delete_last(List *list)
     }
     free(current->next);
     current->next = NULL;
+    list->length--;
 }
 
 void list_delete_at_position(List *list, int position)
@@ -178,6 +181,7 @@ void list_delete_at_position(List *list, int position)
         free(current->next);
         current->next = NULL;
         current->next = tmp_current;
+        list->length--;
     }
 
 }
