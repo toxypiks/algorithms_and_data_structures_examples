@@ -40,6 +40,11 @@ bool is_empty(List *list)
     return false;
 }
 
+int list_len(List *list)
+{
+    return list->length;
+}
+
 void list_push_first(List *list, int data)
 {
     Node *new_node = create_node(data);
@@ -135,6 +140,36 @@ void list_delete_last(List *list)
     list->length--;
 }
 
+void list_delete_at_position(List *list, int position)
+{
+    Node *current = list->first;
+
+    if (position == 0) {
+        printf("ERROR: position must be greater than 0\n");
+        return;
+    }
+    if (list->length > 0 && position > list->length || list->length == 0 && position > 0)  {
+        printf("ERROR: position out of range\n");
+        return;
+    }
+    if (list->length == 0 || position == 1) {
+        list_delete_first(list);
+        return;
+    }
+    else {
+        for (int i = 0; i < position - 1; ++i) {
+            current = current->next;
+        }
+    }
+
+    Node *current_next_next = current->next->next;
+    free(current->next);
+    current->next = NULL;
+    current->next = current_next_next;
+    current_next_next->prev = current;
+    list->length--;
+}
+
 void print_list(List *list)
 {
     Node *current = list->first;
@@ -167,10 +202,7 @@ int main(void)
     list_push_to_position(my_list, 10, 3);
     print_list(my_list);
 
-    list_delete_first(my_list);
-    print_list(my_list);
-
-    list_delete_last(my_list);
+    list_delete_at_position(my_list, 3);
     print_list(my_list);
 
     printf("Is my list empty? %d\n", is_empty(my_list));
