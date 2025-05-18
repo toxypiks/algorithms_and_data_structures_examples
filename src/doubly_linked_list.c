@@ -74,6 +74,37 @@ void list_push_last(List *list, int data)
     list->length++;
 }
 
+void list_push_to_position(List *list, int data, int position)
+{
+    Node *new_node = create_node(data);
+    Node *current = list->first;
+    Node *tmp_current = list->first;
+
+    if (position == 0) {
+        printf("ERROR: position must be greater than 0\n");
+        return;
+    }
+    if (list->length > 0 && position > list->length || list->length == 0 && position > 0)  {
+        printf("ERROR: position out of range\n");
+        return;
+    }
+    if (list->length == 0 || position == 1) {
+        list_push_first(list, data);
+        return;
+    }
+    else {
+        for (int i = 0; i < position - 2; ++i) {
+            current = current->next;
+        }
+    }
+    tmp_current = current;
+    current = current->next;
+    tmp_current->next = new_node;
+    new_node->next = current;
+    new_node->prev = tmp_current;
+    list->length++;
+}
+
 void print_list(List *list)
 {
     Node *current = list->first;
@@ -99,6 +130,9 @@ int main(void)
     print_list(my_list);
 
     list_push_last(my_list, 1);
+    print_list(my_list);
+
+    list_push_to_position(my_list, 10, 3);
     print_list(my_list);
 
     printf("Is my list empty? %d\n", is_empty(my_list));
