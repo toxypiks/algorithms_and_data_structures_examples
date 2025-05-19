@@ -51,14 +51,12 @@ void list_push_first(List *list, int data)
     Node *first_node = list->first;
 
     if (first_node == NULL) {
-        list->first = new_node;
         list->last = new_node;
-        list->length++;
-        return;
+    } else {
+        first_node->prev = new_node;
     }
     list->first = new_node;
     list->first->next = first_node;
-    first_node->prev = list->first;
     list->length++;
 }
 
@@ -66,17 +64,16 @@ void list_push_last(List *list, int data)
 {
     Node *new_node = create_node(data);
     Node *first_node = list->first;
-    Node *last_node = list->last;
+    Node *current = list->last;
+    list->last = new_node;
 
     if(first_node == NULL) {
         list->first = new_node;
-        list->last = new_node;
         list->length++;
         return;
     }
-    list->last = new_node;
-    last_node->next = new_node;
-    list->last->prev = last_node;
+    current->next = new_node;
+    list->last->prev = current;
     list->length++;
 }
 
@@ -86,15 +83,15 @@ void list_push_to_position(List *list, int data, int position)
     Node *current = list->first;
     Node *tmp_current = list->first;
 
-    if (position == 0) {
-        printf("ERROR: position must be greater than 0\n");
+    if (position == list->length) {
+        list_push_last(list, data);
         return;
     }
-    if (list->length > 0 && position > list->length || list->length == 0 && position > 0)  {
+    if (list->length == 0 && position > 0 || list->length > 0 && position > list->length)  {
         printf("ERROR: position out of range\n");
         return;
     }
-    if (list->length == 0 || position == 1) {
+    if (list->length == 0 && position == 0 || list->length > 0 && position == 0) {
         list_push_first(list, data);
         return;
     }
@@ -107,6 +104,7 @@ void list_push_to_position(List *list, int data, int position)
     current = current->next;
     tmp_current->next = new_node;
     new_node->next = current;
+    current->prev = new_node;
     new_node->prev = tmp_current;
     list->length++;
 }
@@ -118,11 +116,17 @@ void list_delete_first(List *list)
         printf("ERROR: List already empty\n");
         return;
     }
+    else if (list->length == 1) {
+        free(list->last);
+        list->last = NULL;
+        list->first = NULL;
+        list->length--;
+        return;
+    }
     Node *second = list->first->next;
     list->first = second;
     list->first->prev = NULL;
     free(first);
-    first = NULL;
     list->length--;
 }
 
@@ -131,6 +135,13 @@ void list_delete_last(List *list)
     Node *last = list->last;
     if (list->length == 0) {
         printf("ERROR: List already empty\n");
+        return;
+    }
+    else if (list->length == 1) {
+        free(list->last);
+        list->last = NULL;
+        list->first = NULL;
+        list->length--;
         return;
     }
     Node *penultimate = last->prev;
@@ -144,27 +155,30 @@ void list_delete_at_position(List *list, int position)
 {
     Node *current = list->first;
 
-    if (position == 0) {
-        printf("ERROR: position must be greater than 0\n");
+    if (current == NULL) {
+        printf("ERROR: List already empty\n");
         return;
     }
-    if (list->length > 0 && position > list->length || list->length == 0 && position > 0)  {
-        printf("ERROR: position out of range\n");
+    if (position == list->length) {
+        list_delete_last(list);
         return;
     }
-    if (list->length == 0 || position == 1) {
+    if (list->length == 0 && position > 0 || list->length > 0 && position > list->length)  {
+        printf("ERROR: Position out of range\n");
+        return;
+    }
+    if (list->length == 0 && position == 0 || list->length > 0 && position == 0) {
         list_delete_first(list);
         return;
     }
     else {
-        for (int i = 0; i < position - 1; ++i) {
+        for (int i = 0; i < position - 2; ++i) {
             current = current->next;
         }
     }
 
     Node *current_next_next = current->next->next;
     free(current->next);
-    current->next = NULL;
     current->next = current_next_next;
     current_next_next->prev = current;
     list->length--;
@@ -199,7 +213,13 @@ int main(void)
 
     printf("my_list last: %d\n", my_list->last->data);
 
-    list_push_to_position(my_list, 10, 3);
+    list_push_to_position(my_list, 10, 1);
+    print_list(my_list);
+
+    list_delete_at_position(my_list, 3);
+    print_list(my_list);
+
+    list_delete_at_position(my_list, 1);
     print_list(my_list);
 
     list_delete_at_position(my_list, 3);
