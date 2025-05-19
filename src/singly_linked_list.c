@@ -94,10 +94,6 @@ void list_push_last(List *list, int data)
 
 void list_push_to_position(List *list, int data, int position)
 {
-    Node *new_node = create_node(data);
-    Node *current = list->first;
-    Node *tmp_current = list->first;
-
     if (position == list->length) {
         list_push_last(list, data);
         return;
@@ -108,11 +104,14 @@ void list_push_to_position(List *list, int data, int position)
     }
     if (list->length == 0 && position > 0 || list->length > 0 && position > list->length) {
         printf("ERROR: Position out of range\n");
-        free(new_node);
         return;
     }
     else {
-        for (int i = 0; i < position - 2; ++i) {
+        Node *new_node = create_node(data);
+        Node *current = list->first;
+        Node *tmp_current = list->first;
+
+        for (int i = 0; i < position - 1; ++i) {
             current = current->next;
         }
         tmp_current = current;
@@ -174,11 +173,11 @@ void list_delete_at_position(List *list, int position)
         printf("ERROR: List already empty\n");
         return;
     }
-    if (position == list->length) {
+    if (position == list->length - 1) {
         list_delete_last(list);
         return;
     }
-    if (list->length == 0 && position > 0 || list->length > 0 && position > list->length) {
+    if (list->length == 0 && position > 0 || list->length > 0 && position > list->length - 1) {
         printf("ERROR: Position out of range\n");
         return;
     }
@@ -187,7 +186,7 @@ void list_delete_at_position(List *list, int position)
         return;
     }
     else {
-        for (int i = 0; i < position - 2; ++i) {
+        for (int i = 0; i < position - 1; ++i) {
             current = current->next;
         }
         tmp_current = current->next->next;
@@ -208,18 +207,28 @@ void print_list(List *list)
     printf("\n");
 }
 
-void list_swap_positions(List *list, int position_a, int position_b)
+void list_swap_positions(List *list, int pos_a, int pos_b)
 {
     Node *current_a = list->first;
     Node *current_b = list->first;
 
+    int position_a = pos_a;
+    int position_b = pos_b;
+
     if (position_a > position_b) {
-        printf("ERROR: First position must be smaller than second\n");
+        int tmp = position_a;
+        position_a = position_b;
+        position_b = tmp;
     }
     if (list->length < 2) {
         printf("ERROR: Too few elements in list\n");
+        return;
     }
     if (position_a == position_b) {
+        return;
+    }
+    if (position_a > list->length || position_b > list->length) {
+        printf("ERROR: Position out of bounds\n");
         return;
     }
     for (size_t i = 0; i < position_a; ++i) {
@@ -232,8 +241,9 @@ void list_swap_positions(List *list, int position_a, int position_b)
     int data_a = current_a->data;
     int data_b = current_b->data;
 
-    list_delete_at_position(list, position_a);
+    // delete the value with greater index first
     list_delete_at_position(list, position_b);
+    list_delete_at_position(list, position_a);
 
     list_push_to_position(list, data_b, position_a);
     list_push_to_position(list, data_a, position_b);
@@ -257,16 +267,39 @@ int main (void)
     list_push_to_position(my_list, 9, 0);
     print_list(my_list);
 
+    printf("------delete last------\n");
+    list_delete_last(my_list);
+    print_list(my_list);
+
+    list_push_last(my_list, 11);
+    print_list(my_list);
+
     list_push_to_position(my_list, 7, 2);
     print_list(my_list);
 
     list_push_to_position(my_list, 7, 5);
     print_list(my_list);
 
+    list_push_to_position(my_list, 10, 4);
+    print_list(my_list);
+
+    list_push_to_position(my_list, 24, 0);
+    print_list(my_list);
+
+    list_push_to_position(my_list, 17, 1);
+    print_list(my_list);
+
     list_swap_positions(my_list, 1, 3);
     print_list(my_list);
 
+    list_swap_positions(my_list, 0, 4);
+    print_list(my_list);
+
+    list_swap_positions(my_list, 5, 6);
+    print_list(my_list);
+
     //list_delete_at_position(my_list, 3);
+    //print_list(my_list);
 
     printf("Length of my list is: %d\n", list_len(my_list));
     printf("Is my List empty? %d\n", is_empty(my_list));

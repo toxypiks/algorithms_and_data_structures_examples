@@ -45,3 +45,13 @@ target_sources(doubly_linked_list
  PRIVATE
   ${DOUBLY_LINKED_LIST_SRC}
 )
+
+set(BINARY_TREE_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/binary_tree.c
+  )
+
+add_executable(binary_tree)
+target_sources(binary_tree
+ PRIVATE
+  ${BINARY_TREE_SRC}
+)
