@@ -208,7 +208,36 @@ void print_list(List *list)
     printf("\n");
 }
 
-//TODO swap function
+void list_swap_positions(List *list, int position_a, int position_b)
+{
+    Node *current_a = list->first;
+    Node *current_b = list->first;
+
+    if (position_a > position_b) {
+        printf("ERROR: First position must be smaller than second\n");
+    }
+    if (list->length < 2) {
+        printf("ERROR: Too few elements in list\n");
+    }
+    if (position_a == position_b) {
+        return;
+    }
+    for (size_t i = 0; i < position_a; ++i) {
+        current_a = current_a->next;
+    }
+    for (size_t j = 0; j < position_b; ++j) {
+        current_b = current_b->next;
+    }
+
+    int data_a = current_a->data;
+    int data_b = current_b->data;
+
+    list_delete_at_position(list, position_a);
+    list_delete_at_position(list, position_b);
+
+    list_push_to_position(list, data_b, position_a);
+    list_push_to_position(list, data_a, position_b);
+}
 
 int main (void)
 {
@@ -234,12 +263,13 @@ int main (void)
     list_push_to_position(my_list, 7, 5);
     print_list(my_list);
 
-    list_delete_at_position(my_list, 3);
+    list_swap_positions(my_list, 1, 3);
+    print_list(my_list);
+
+    //list_delete_at_position(my_list, 3);
 
     printf("Length of my list is: %d\n", list_len(my_list));
     printf("Is my List empty? %d\n", is_empty(my_list));
-
-    print_list(my_list);
 
     return 0;
 }
