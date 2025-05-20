@@ -14,6 +14,7 @@ Node* create_node (int data)
     new_node->data = data;
     new_node->left = NULL;
     new_node->right = NULL;
+    return new_node;
 }
 
 void tree_insert(Node **tree, int data) {
@@ -51,6 +52,7 @@ void tree_insert(Node **tree, int data) {
     }
 }
 
+// from root iterating through left tree than through right tree
 void tree_print_preorder(Node *tree)
 {
     if (tree == NULL) {
