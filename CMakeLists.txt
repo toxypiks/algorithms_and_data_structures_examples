@@ -16,6 +16,16 @@ target_sources(quicksort
   ${QUICKSORT_SRC}
 )
 
+set(KNUTH_MORRIS_PRATT_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/knuth_morris_pratt.c
+  )
+
+add_executable(knuth_morris_pratt)
+target_sources(knuth_morris_pratt
+ PRIVATE
+  ${KNUTH_MORRIS_PRATT_SRC}
+)
+
 set(INSERTION_SORT_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/insertion_sort.c
   )
