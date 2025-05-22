@@ -65,3 +65,13 @@ target_sources(binary_tree
  PRIVATE
   ${BINARY_TREE_SRC}
 )
+
+set(AVL_TREE_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/avl_tree.c
+  )
+
+add_executable(avl_tree)
+target_sources(avl_tree
+ PRIVATE
+  ${AVL_TREE_SRC}
+)
