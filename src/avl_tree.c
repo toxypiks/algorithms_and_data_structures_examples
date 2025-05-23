@@ -60,14 +60,55 @@ AVLNode* left_rotate(AVLNode *x)
     return y;
 }
 
-/*void avl_insert(Node **root, int data)
+int get_balance(AVLNode *n)
 {
-    Node *new_node = create_avl_node(data);
-    if (*root == NULL) {
-        *root = new_node;
-        return;
+    return n == NULL ? 0 : get_height(n->left) - get_height(n->right);
+}
+
+AVLNode* avl_insert(AVLNode *root, int key)
+{
+    // Insertion of new node
+    if (root == NULL) {
+        return create_avl_node(key);
     }
-}*/
+
+    if (key < root->key) {
+        root->left = avl_insert(root->left, key);
+    }
+    else if (key > root->key) {
+        root->right = avl_insert(root->right, key);
+    } else {
+        return root; // equal keys are not allowed
+    }
+
+    // Update height of ancestor node
+    root->height = max(get_height(root->left), get_height(root->right)) + 1;
+
+    // Get balance factor of ancestor to check if its unbalanced
+    int balance = get_balance(root);
+
+    // 4 unbalanced cases
+
+    if (balance > 1 && key < root->left->key) {
+        return right_rotate(root);
+    }
+
+    if (balance < -1 && key > root->right->key) {
+        return left_rotate(root);
+    }
+
+    if (balance > 1 && key > root->left->key) {
+        root->left = left_rotate(root->left);
+        return right_rotate(root);
+    }
+
+    if (balance < -1 && key < root->right->key) {
+        root->right = right_rotate(root->right);
+        return left_rotate(root);
+    }
+
+    return root;
+}
 
 
 int main (void)
