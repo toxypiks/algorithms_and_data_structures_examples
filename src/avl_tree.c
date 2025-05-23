@@ -44,6 +44,22 @@ AVLNode* right_rotate(AVLNode *y)
     return x;
 }
 
+AVLNode* left_rotate(AVLNode *x)
+{
+    AVLNode *y = x->right;
+    AVLNode *T2 = y->left;
+
+    // left rotate
+    y->left = x;
+    x->right = T2;
+
+    // update heights
+    x->height = max(get_height(x->left), get_height(x->right)) + 1;
+    y->height = max(get_height(y->left), get_height(y->right)) + 1;
+
+    return y;
+}
+
 /*void avl_insert(Node **root, int data)
 {
     Node *new_node = create_avl_node(data);
