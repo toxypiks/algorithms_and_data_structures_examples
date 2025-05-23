@@ -110,8 +110,29 @@ AVLNode* avl_insert(AVLNode *root, int key)
     return root;
 }
 
+void print_preorder(AVLNode *root)
+{
+    if (root != NULL)
+    {
+        printf("%d ", root->key);
+        print_preorder(root->left);
+        print_preorder(root->right);
+    }
+}
+
 
 int main (void)
 {
+    AVLNode *root = NULL;
+
+    root = avl_insert(root, 10);
+    root = avl_insert(root, 20);
+    root = avl_insert(root, 30);
+    root = avl_insert(root, 40);
+    root = avl_insert(root, 50);
+    root = avl_insert(root, 25);
+    root = avl_insert(root, 60);
+
+    print_preorder(root);
     return 0;
 }
