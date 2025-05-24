@@ -36,6 +36,16 @@ target_sources(insertion_sort
   ${INSERTION_SORT_SRC}
 )
 
+set(HEAP_SORT_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/heap_sort.c
+  )
+
+add_executable(heap_sort)
+target_sources(heap_sort
+ PRIVATE
+  ${HEAP_SORT_SRC}
+)
+
 set(SINGLY_LINKED_LIST_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/singly_linked_list.c
   )
