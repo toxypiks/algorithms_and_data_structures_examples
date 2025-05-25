@@ -85,3 +85,13 @@ target_sources(avl_tree
  PRIVATE
   ${AVL_TREE_SRC}
 )
+
+set(STACK_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/stack.c
+  )
+
+add_executable(stack)
+target_sources(stack
+ PRIVATE
+  ${STACK_SRC}
+)
