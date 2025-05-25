@@ -33,12 +33,49 @@ bool is_empty(Stack *stack)
 
 void stack_push(Stack *stack, int value)
 {
-
+    StackElement *new_element = create_stack_element(value);
+    new_element->last = stack->top;
+    stack->top = new_element;
 }
 
+int stack_pop(Stack *stack)
+{
+    if (is_empty(stack)) {
+        return 1;
+    }
+    StackElement *remove = stack->top;
+    stack->top = remove->last;
+    int value = remove->value;
+    free(remove);
+    remove = NULL;
+    return value;
+}
+
+void stack_print_elements(Stack *stack, StackElement *top)
+{
+    if (top) {
+        stack_print_elements(stack, top->last);
+        printf("%d ", top->value);
+    }
+}
+
+void stack_print(Stack *stack)
+{
+    stack_print_elements(stack, stack->top);
+}
 
 int main(void)
 {
-    printf("Hello World\n");
+    Stack *my_stack = create_stack();
+    stack_push(my_stack, 2);
+    stack_push(my_stack, 6);
+    stack_push(my_stack, 4);
+    stack_push(my_stack, 8);
+    stack_push(my_stack, 9);
+    stack_print(my_stack);
+
+    printf("--------------\n");
+    stack_pop(my_stack);
+    stack_print(my_stack);
     return 0;
 }
