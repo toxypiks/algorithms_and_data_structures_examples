@@ -52,18 +52,30 @@ void tree_insert(Node **tree, int data) {
     }
 }
 
-// from root iterating through left tree than through right tree
-void tree_print_preorder(Node *tree)
+void tree_print_preorder(Node* tree)
 {
-    if (tree == NULL) {
-        return;
+    if (tree != NULL) {
+       printf("%d ", tree->data);
+       tree_print_preorder(tree->left);
+       tree_print_preorder(tree->right);
     }
-    printf("%d\n", tree->data);
-    if (tree->left != NULL) {
-        tree_print_preorder(tree->left);
+}
+
+void tree_print_inorder(Node* tree)
+{
+    if (tree != NULL) {
+        tree_print_inorder(tree->left);
+        printf("%d ", tree->data);
+        tree_print_inorder(tree->right);
     }
-    if (tree->right != NULL) {
-        tree_print_preorder(tree->right);
+}
+
+void tree_print_postorder(Node* tree)
+{
+    if (tree != NULL) {
+        tree_print_inorder(tree->left);
+        tree_print_inorder(tree->right);
+        printf("%d ", tree->data);
     }
 }
 
@@ -77,7 +89,12 @@ int main (void)
     tree_insert(&tree, 17);
     tree_insert(&tree, 1);
 
+    // 10, 2, 1, 5, 17
     tree_print_preorder(tree);
+
+    printf("\n---------------------------\n\n");
+    // 1, 2, 5, 10, 17
+    tree_print_inorder(tree);
 
     return 0;
 }
