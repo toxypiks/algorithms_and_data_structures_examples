@@ -4,7 +4,7 @@
 
 typedef struct StackElement {
     int value;
-    struct StackElement *last;
+    struct StackElement *prev;
 } StackElement;
 
 typedef struct Stack {
@@ -15,7 +15,7 @@ StackElement* create_stack_element(int value)
 {
     StackElement *new_stack_element = malloc(sizeof(StackElement));
     new_stack_element->value = value;
-    new_stack_element->last = NULL;
+    new_stack_element->prev = NULL;
     return new_stack_element;
 }
 
@@ -28,40 +28,46 @@ Stack* create_stack()
 
 bool is_empty(Stack *stack)
 {
-    return stack->top == NULL ? 1 : 0;
+    return stack->top == NULL ? true : false;
 }
 
 void stack_push(Stack *stack, int value)
 {
     StackElement *new_element = create_stack_element(value);
-    new_element->last = stack->top;
+    new_element->prev = stack->top;
     stack->top = new_element;
 }
 
-int stack_pop(Stack *stack)
+StackElement* stack_pop(Stack *stack)
 {
     if (is_empty(stack)) {
-        return 1;
+        return NULL;
     }
     StackElement *remove = stack->top;
-    stack->top = remove->last;
-    int value = remove->value;
-    free(remove);
-    remove = NULL;
-    return value;
+    stack->top = remove->prev;
+    return remove;
 }
 
-void stack_print_elements(Stack *stack, StackElement *top)
+void _stack_print_elements(Stack *stack, StackElement *top)
 {
     if (top) {
-        stack_print_elements(stack, top->last);
+        stack_print_elements(stack, top->prev);
         printf("%d ", top->value);
+    }
+}
+
+void stack_print2(Stack* stack)
+{
+    Stackelement* tmp = stack->top;
+    while(tmp !=NULL) {
+        printf("%d",tmp->value);
+        tmp = tmp->prev;
     }
 }
 
 void stack_print(Stack *stack)
 {
-    stack_print_elements(stack, stack->top);
+    _stack_print_elements(stack, stack->top);
 }
 
 int main(void)
