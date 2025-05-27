@@ -95,3 +95,13 @@ target_sources(stack
  PRIVATE
   ${STACK_SRC}
 )
+
+set(QUEUE_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/queue.c
+  )
+
+add_executable(queue)
+target_sources(queue
+ PRIVATE
+  ${QUEUE_SRC}
+)
