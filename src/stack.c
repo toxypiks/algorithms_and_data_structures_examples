@@ -51,14 +51,14 @@ StackElement* stack_pop(Stack *stack)
 void _stack_print_elements(Stack *stack, StackElement *top)
 {
     if (top) {
-        stack_print_elements(stack, top->prev);
+        _stack_print_elements(stack, top->prev);
         printf("%d ", top->value);
     }
 }
 
 void stack_print2(Stack* stack)
 {
-    Stackelement* tmp = stack->top;
+    StackElement* tmp = stack->top;
     while(tmp !=NULL) {
         printf("%d",tmp->value);
         tmp = tmp->prev;
