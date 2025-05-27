@@ -11,7 +11,7 @@ typedef enum Result {
 
 typedef struct QueueNode {
     struct QueueNode *next;
-    void *data;
+    int data;
 } QueueNode;
 
 typedef struct Queue {
@@ -19,9 +19,12 @@ typedef struct Queue {
     QueueNode *back;
 } Queue;
 
-QueueNode* create_queue_node(void *data)
+QueueNode* create_queue_node(int data)
 {
     QueueNode *new_queue_node = malloc(sizeof(QueueNode));
+    if (new_queue_node == NULL) {
+        return ERR_NOMEM;
+    }
     new_queue_node->next = NULL;
     new_queue_node->data = data;
     return new_queue_node;
@@ -30,6 +33,9 @@ QueueNode* create_queue_node(void *data)
 Queue* create_queue()
 {
     Queue *new_queue = malloc(sizeof(Queue));
+    if (new_queue == NULL) {
+        return ERR_NOMEN;
+    }
     new_queue->front = NULL;
     new_queue->back = NULL;
     return new_queue;
@@ -42,7 +48,7 @@ bool is_empty(Queue *queue)
 
 Result queue_destroy(Queue *queue)
 {
-    if (queue == NULL) {
+    if (is_empty(queue)) {
         return ERR_INVAL;
     }
     while (queue->front != NULL) {
@@ -51,6 +57,36 @@ Result queue_destroy(Queue *queue)
         free(tmp);
     }
     free(queue);
+    return SUCCESS;
+}
+
+int queue_dequeue(Queue *queue)
+{
+    if (queue == NULL || queue->front == NULL) {
+        return NULL;
+    }
+    QueueNode *tmp = queue->front;
+    int data = tmp->data;
+    queue->front = tmp->next;
+    if (queue->front == NULL) {
+        queue->back = NULL;
+    }
+    free(tmp);
+    return data;
+}
+
+int queue_enqueue(Queue *queue, int data)
+{
+    if(queue == NULL) {
+        return ERR_INVAL;
+    }
+    QueueNode *node = create_queue_node(data);
+    if (queue->back == NULL) {
+        queue->front = queue->back = node;
+    } else {
+        queue->back->next = node;
+        queue->back = node;
+    }
     return SUCCESS;
 }
 
