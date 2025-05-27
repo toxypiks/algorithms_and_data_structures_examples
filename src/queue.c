@@ -3,6 +3,12 @@
 
 // singly-linked list queue
 
+typedef enum Result {
+    SUCCESS,
+    ERR_INVAL,
+    ERR_NOMEM
+} Result;
+
 typedef struct QueueNode {
     struct QueueNode *next;
     void *data;
@@ -32,6 +38,13 @@ Queue* create_queue()
 bool is_empty(Queue *queue)
 {
     return queue->front == NULL|| queue->back == NULL ? true : false;
+}
+
+Result queue_destroy(Queue *queue)
+{
+    if (queue == NULL) {
+        return ERR_INVAL;
+    }
 }
 
 int main(void)
