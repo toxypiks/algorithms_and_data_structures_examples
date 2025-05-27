@@ -23,7 +23,7 @@ QueueNode* create_queue_node(int data)
 {
     QueueNode *new_queue_node = malloc(sizeof(QueueNode));
     if (new_queue_node == NULL) {
-        return ERR_NOMEM;
+        return NULL;
     }
     new_queue_node->next = NULL;
     new_queue_node->data = data;
@@ -34,7 +34,7 @@ Queue* create_queue()
 {
     Queue *new_queue = malloc(sizeof(Queue));
     if (new_queue == NULL) {
-        return ERR_NOMEN;
+        return NULL;
     }
     new_queue->front = NULL;
     new_queue->back = NULL;
@@ -60,19 +60,17 @@ Result queue_destroy(Queue *queue)
     return SUCCESS;
 }
 
-int queue_dequeue(Queue *queue)
+QueueNode* queue_dequeue(Queue *queue)
 {
     if (queue == NULL || queue->front == NULL) {
         return NULL;
     }
     QueueNode *tmp = queue->front;
-    int data = tmp->data;
     queue->front = tmp->next;
     if (queue->front == NULL) {
         queue->back = NULL;
     }
-    free(tmp);
-    return data;
+    return tmp;
 }
 
 int queue_enqueue(Queue *queue, int data)
@@ -90,7 +88,28 @@ int queue_enqueue(Queue *queue, int data)
     return SUCCESS;
 }
 
+void print_queue(Queue *queue)
+{
+    if (queue == NULL) {
+        return;
+    }
+    QueueNode *tmp = queue->front;
+    while (tmp != NULL) {
+        printf("%d\n", tmp->data);
+        tmp = tmp->next;
+    }
+}
+
 int main(void)
 {
+    Queue *my_queue = create_queue();
+    printf("is empty? %d\n", is_empty(my_queue));
+
+    queue_enqueue(my_queue, 5);
+    queue_enqueue(my_queue, 8);
+    queue_enqueue(my_queue, 10);
+    queue_enqueue(my_queue, 9);
+
+    print_queue(my_queue);
     return 0;
 }
