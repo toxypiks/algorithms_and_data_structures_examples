@@ -45,6 +45,13 @@ Result queue_destroy(Queue *queue)
     if (queue == NULL) {
         return ERR_INVAL;
     }
+    while (queue->front != NULL) {
+        QueueNode *tmp = queue->front;
+        queue->front = tmp->next;
+        free(tmp);
+    }
+    free(queue);
+    return SUCCESS;
 }
 
 int main(void)
